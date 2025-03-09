@@ -17,5 +17,6 @@ class ImageInputBloc extends Bloc<ImageInputEvent, ImageInputState> {
         emit(ImageInputFailure(message: e.toString()));
       }
     });
+    
   }
 }
