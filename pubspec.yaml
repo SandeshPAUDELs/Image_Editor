@@ -39,6 +39,7 @@ dependencies:
   flutter_bloc: ^9.1.0
   bloc: ^9.0.0
   equatable: ^2.0.7
+  image: ^4.5.3
 
 dev_dependencies:
   flutter_test:
@@ -57,11 +58,13 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
 
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-
+  shaders:
+    - shaders/image-edit.frag
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_editor/presentation/bloc/image_input_events.dart';
-import 'package:image_editor/presentation/bloc/image_input_state.dart';
-import 'package:image_editor/presentation/bloc/input_input_bloc.dart';
-import 'package:image_editor/presentation/screens/image_editor_page.dart';
+import 'package:image_editor/presentation/bloc/imageINput/image_input_events.dart';
+import 'package:image_editor/presentation/bloc/imageINput/image_input_state.dart';
+import 'package:image_editor/presentation/bloc/imageINput/input_input_bloc.dart';
+import 'package:image_editor/presentation/screens/image_adjustment/image_adjustment_page.dart';
 import 'package:image_picker/image_picker.dart';
 
 class HomePage extends StatefulWidget {
@@ -30,20 +30,27 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 children: [
                   IconButton(
-
                     onPressed: () {
-                      // perform editing
+                     
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CustomEditor(imagePath: state.imagePath),
+                          builder:
+                              (context) => ImageAdjustmentPage(
+                                imagePath: state.imagePath,
+                              ),
                         ),
                       );
                     },
 
                     icon: const Icon(Icons.edit),
                   ),
-                  Image.file(File(state.imagePath)),
+                  Expanded(
+                    child: Image.file(
+                      File(state.imagePath),
+                      fit: BoxFit.contain,
+                    ),
+                  ),
                 ],
               ),
             );

@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:image_editor/presentation/bloc/image_input_events.dart';
-import 'package:image_editor/presentation/bloc/image_input_state.dart';
+import 'package:image_editor/presentation/bloc/imageINput/image_input_events.dart';
+import 'package:image_editor/presentation/bloc/imageINput/image_input_state.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImageInputBloc extends Bloc<ImageInputEvent, ImageInputState> {

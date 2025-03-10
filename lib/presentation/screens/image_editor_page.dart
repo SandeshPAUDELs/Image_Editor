@@ -9,6 +9,8 @@ class CustomEditor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    File imageFile = File(imagePath);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Image'),
@@ -16,12 +18,29 @@ class CustomEditor extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-            child: ImageEditor(
-              image: FileImage(File(imagePath)),
-            ),
+            child: imageFile.existsSync()
+              ? Image.file(imageFile)
+              : const Center(
+                  child: Text('Failed to load image.'),
+                ),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              final outputFile = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ImageEditor(
+                    image: imageFile.readAsBytesSync(),
+                  ),
+                ),
+              );
+
+            },
+            child: const Text('Edit Image'),
           ),
         ],
       ),
     );
   }
 }
+
