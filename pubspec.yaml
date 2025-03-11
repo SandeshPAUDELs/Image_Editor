@@ -40,6 +40,7 @@ dependencies:
   bloc: ^9.0.0
   equatable: ^2.0.7
   image: ^4.5.3
+  draw_text: ^0.0.2
 
 dev_dependencies:
   flutter_test:
@@ -65,6 +66,7 @@ flutter:
   uses-material-design: true
   shaders:
     - shaders/image-edit.frag
+    
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

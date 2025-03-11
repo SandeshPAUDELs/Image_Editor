@@ -1,20 +1,41 @@
 import 'package:equatable/equatable.dart';
 
-abstract class ImageAdjustEvent extends Equatable {
-  const ImageAdjustEvent();
+abstract class ImageAdjustmentEvent extends Equatable {
+  const ImageAdjustmentEvent();
+
   @override
   List<Object> get props => [];
 }
 
-
-class ChangeBrightnessEvent extends ImageAdjustEvent {
+class ChangeBrightness extends ImageAdjustmentEvent {
   final double brightness;
 
-   ChangeBrightnessEvent(this.brightness);
+  const ChangeBrightness(this.brightness);
+
+  @override
+  List<Object> get props => [brightness];
 }
 
-class ChangeContrastEvent extends ImageAdjustEvent {
+class ChangeContrast extends ImageAdjustmentEvent {
   final double contrast;
 
-   ChangeContrastEvent(this.contrast);
+  const ChangeContrast(this.contrast);
+
+  @override
+  List<Object> get props => [contrast];
+}
+
+class ChangeSaturation extends ImageAdjustmentEvent {
+  final double saturation;
+
+  const ChangeSaturation(this.saturation);
+
+  @override
+  List<Object> get props => [saturation];
+}
+class ChangeWhiteBalance extends ImageAdjustmentEvent{
+  final double whiteBalance;
+  const ChangeWhiteBalance(this.whiteBalance);
+  @override
+  List<Object> get props => [whiteBalance];
 }

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_editor/presentation/bloc/imageINput/image_input_events.dart';
 import 'package:image_editor/presentation/bloc/imageINput/image_input_state.dart';
 import 'package:image_editor/presentation/bloc/imageINput/input_input_bloc.dart';
-import 'package:image_editor/presentation/screens/image_adjustment/image_adjustment_page.dart';
+import 'package:image_editor/presentation/screens/texts/draw_text.dart';
 import 'package:image_picker/image_picker.dart';
 
 class HomePage extends StatefulWidget {
@@ -31,17 +31,15 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   IconButton(
                     onPressed: () {
-                     
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder:
-                              (context) => ImageAdjustmentPage(
+                              (context) => DrawText(
                                 imagePath: state.imagePath,
                               ),
                         ),
-                      );
-                    },
+                      );                    },
 
                     icon: const Icon(Icons.edit),
                   ),

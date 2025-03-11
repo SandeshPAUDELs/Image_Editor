@@ -36,7 +36,7 @@ class CustomEditor extends StatelessWidget {
               );
 
             },
-            child: const Text('Edit Image'),
+            child: const Text('Crop Image'),
           ),
         ],
       ),
