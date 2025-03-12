@@ -10,7 +10,7 @@ class DrawTextState{
 
   DrawTextState({
     this.text = "Sample Text",
-    this.fontSize = 30,
+    this.fontSize = 3,
     this.textColor = Colors.black,
     this.fontWeight = FontWeight.normal,
     this.fontStyle = FontStyle.normal,

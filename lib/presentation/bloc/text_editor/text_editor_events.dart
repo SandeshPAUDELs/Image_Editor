@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 abstract class DrawTextEvent extends Equatable {
-  
   @override
   List<Object?> get props => [];
 }

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_editor/presentation/bloc/imageINput/image_input_events.dart';
 import 'package:image_editor/presentation/bloc/imageINput/image_input_state.dart';
 import 'package:image_editor/presentation/bloc/imageINput/input_input_bloc.dart';
-import 'package:image_editor/presentation/screens/texts/draw_text.dart';
+import 'package:image_editor/presentation/screens/draw/draw_shapes.dart';
 import 'package:image_picker/image_picker.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,31 +26,29 @@ class _HomePageState extends State<HomePage> {
           } else if (state is ImageInputLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is ImageInputSuccess) {
-            return Center(
-              child: Column(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder:
-                              (context) => DrawText(
-                                imagePath: state.imagePath,
-                              ),
-                        ),
-                      );                    },
-
-                    icon: const Icon(Icons.edit),
+            return Column(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (context) => DrawShapesView(
+                              imagePath: state.imagePath,
+                            ),
+                      ),
+                    );                    },
+            
+                  icon: const Icon(Icons.edit),
+                ),
+                Expanded(
+                  child: Image.file(
+                    File(state.imagePath),
+                    fit: BoxFit.contain,
                   ),
-                  Expanded(
-                    child: Image.file(
-                      File(state.imagePath),
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             );
           } else if (state is ImageInputFailure) {
             return const Center(child: Text('Failed to load image.'));
