@@ -5,6 +5,8 @@ import 'package:image_editor/presentation/bloc/text_editor/text_editor_bloc.dart
 import 'package:image_editor/presentation/bloc/text_editor/text_editor_events.dart';
 import 'package:image_editor/presentation/bloc/text_editor/text_editor_state.dart';
 import 'package:image_editor/presentation/screens/texts/custom_painter.dart';
+import 'package:image_editor/presentation/widgets/color_picker_widget.dart';
+import 'package:image_editor/presentation/widgets/custom_sliders_for_size.dart';
 
 class DrawText extends StatelessWidget {
   final String imagePath;
@@ -17,6 +19,9 @@ class DrawText extends StatelessWidget {
     Colors.green,
     Colors.orange,
     Colors.purple,
+    Colors.yellow,
+    Colors.teal,
+    Colors.amber,
   ];
 
   final List<String> fontStyles = ['Normal', 'Bold', 'Italic'];
@@ -27,7 +32,6 @@ class DrawText extends StatelessWidget {
     return BlocProvider(
       create: (context) => DrawTextBloc(),
       child: Scaffold(
-        appBar: AppBar(title: const Text('Add Text to Image')),
         body: BlocBuilder<DrawTextBloc, DrawTextState>(
           builder: (context, state) {
             return Padding(
@@ -41,52 +45,141 @@ class DrawText extends StatelessWidget {
                       children: [
                         Image.file(File(imagePath)),
                         Positioned(
-                          top: 50,
+                          top: 80,
                           left: state.textAlign == TextAlign.left ? 10 : null,
                           right: state.textAlign == TextAlign.right ? 10 : null,
-
-                          child: CustomPaint(
-                            painter: DottedBorderPainter(
-                              dashWidth: 10,
-                              dashSpace: 10,
-                              color: Colors.blue,
-                              strokeWidth: 1,
-                            ),
-                            child: Container(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                state.text,
-                                maxLines: 3,
-                                style: TextStyle(
-                                  fontSize: state.fontSize,
-                                  color: state.textColor,
-                                  fontWeight: state.fontWeight,
-                                  fontStyle: state.fontStyle,
-                                ),
-                                textAlign: state.textAlign,
-                                overflow: TextOverflow.ellipsis,
+                          child: Stack(
+                            children: [
+                              Column(
+                                children: [
+                                  CustomPaint(
+                                    painter: DottedBorderPainter(
+                                      dashWidth: 10,
+                                      dashSpace: 10,
+                                      color: Colors.blue,
+                                      strokeWidth: 1,
+                                    ),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(8.0),
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                          0.8,
+                                      child: Text(
+                                        state.text,
+                                        maxLines: 3,
+                                        style: TextStyle(
+                                          fontSize: state.fontSize,
+                                          color: state.textColor,
+                                          fontWeight: state.fontWeight,
+                                          fontStyle: state.fontStyle,
+                                        ),
+                                        textAlign: state.textAlign,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      DropdownButton<String>(
+                                        value: fontStyles[0],
+                                        onChanged: (String? newValue) {
+                                          if (newValue == 'Bold') {
+                                            context.read<DrawTextBloc>().add(
+                                              UpdateFontWeight(FontWeight.bold),
+                                            );
+                                          } else if (newValue == 'Italic') {
+                                            context.read<DrawTextBloc>().add(
+                                              UpdateFontStyle(FontStyle.italic),
+                                            );
+                                          } else {
+                                            context.read<DrawTextBloc>().add(
+                                              UpdateFontWeight(
+                                                FontWeight.normal,
+                                              ),
+                                            );
+                                            context.read<DrawTextBloc>().add(
+                                              UpdateFontStyle(FontStyle.normal),
+                                            );
+                                          }
+                                        },
+                                        items:
+                                            fontStyles
+                                                .map(
+                                                  (value) => DropdownMenuItem(
+                                                    value: value,
+                                                    child: Text(value),
+                                                  ),
+                                                )
+                                                .toList(),
+                                      ),
+                                      SizedBox(width: 20),
+                                      DropdownButton<String>(
+                                        value: textAlignments[0],
+                                        onChanged: (String? newValue) {
+                                          if (newValue == 'Left') {
+                                            context.read<DrawTextBloc>().add(
+                                              UpdateTextAlign(TextAlign.left),
+                                            );
+                                          } else if (newValue == 'Right') {
+                                            context.read<DrawTextBloc>().add(
+                                              UpdateTextAlign(TextAlign.right),
+                                            );
+                                          } else {
+                                            context.read<DrawTextBloc>().add(
+                                              UpdateTextAlign(TextAlign.center),
+                                            );
+                                          }
+                                        },
+                                        items:
+                                            textAlignments
+                                                .map(
+                                                  (value) => DropdownMenuItem(
+                                                    value: value,
+                                                    child: Text(value),
+                                                  ),
+                                                )
+                                                .toList(),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                            ),
+                            ],
                           ),
                         ),
                       ],
                     ),
                   ),
+
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
-                        Slider(
-                          value: state.fontSize,
-                          min: 1.0,
-                          max: 10.0,
-                          divisions: 9,
-
-                          onChanged: (value) {
-                            context.read<DrawTextBloc>().add(
-                              UpdateFontSize(value),
-                            );
-                          },
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 10,
+                              child: CustomSlidersForSize.buildSliderforSize(
+                                context,
+                                state.fontSize,
+                                1.0,
+                                10.0,
+                                32,
+                                (value) {
+                                  context.read<DrawTextBloc>().add(
+                                    UpdateFontSize(value),
+                                  );
+                                },
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () => _showTextInputDialog(context),
+                              icon: Icon(Icons.text_fields),
+                            ),
+                            Expanded(flex: 2, child: Text('Size')),
+                          ],
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -102,81 +195,18 @@ class DrawText extends StatelessWidget {
                                         UpdateTextColor(color),
                                       );
                                     },
-                                    child: Container(
-                                      width: 30,
-                                      height: 30,
-                                      decoration: BoxDecoration(
-                                        color: color,
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                          color:
-                                              state.textColor == color
-                                                  ? Colors.white
-                                                  : Colors.transparent,
-                                          width: 2,
+
+                                    child: Row(
+                                      children: [
+                                        ColorPickerWidget.createColorPicker(
+                                          context,
+                                          color,
                                         ),
-                                      ),
+                                      ],
                                     ),
                                   ),
                                 );
                               }).toList(),
-                        ),
-                        DropdownButton<String>(
-                          value: fontStyles[0],
-                          onChanged: (String? newValue) {
-                            if (newValue == 'Bold') {
-                              context.read<DrawTextBloc>().add(
-                                UpdateFontWeight(FontWeight.bold),
-                              );
-                            } else if (newValue == 'Italic') {
-                              context.read<DrawTextBloc>().add(
-                                UpdateFontStyle(FontStyle.italic),
-                              );
-                            } else {
-                              context.read<DrawTextBloc>().add(
-                                UpdateFontWeight(FontWeight.normal),
-                              );
-                              context.read<DrawTextBloc>().add(
-                                UpdateFontStyle(FontStyle.normal),
-                              );
-                            }
-                          },
-                          items:
-                              fontStyles
-                                  .map(
-                                    (value) => DropdownMenuItem(
-                                      value: value,
-                                      child: Text(value),
-                                    ),
-                                  )
-                                  .toList(),
-                        ),
-                        DropdownButton<String>(
-                          value: textAlignments[0],
-                          onChanged: (String? newValue) {
-                            if (newValue == 'Left') {
-                              context.read<DrawTextBloc>().add(
-                                UpdateTextAlign(TextAlign.left),
-                              );
-                            } else if (newValue == 'Right') {
-                              context.read<DrawTextBloc>().add(
-                                UpdateTextAlign(TextAlign.right),
-                              );
-                            } else {
-                              context.read<DrawTextBloc>().add(
-                                UpdateTextAlign(TextAlign.center),
-                              );
-                            }
-                          },
-                          items:
-                              textAlignments
-                                  .map(
-                                    (value) => DropdownMenuItem(
-                                      value: value,
-                                      child: Text(value),
-                                    ),
-                                  )
-                                  .toList(),
                         ),
                       ],
                     ),
@@ -189,4 +219,36 @@ class DrawText extends StatelessWidget {
       ),
     );
   }
+}
+
+void _showTextInputDialog(BuildContext context) {
+  TextEditingController textController = TextEditingController();
+
+  showDialog(
+    context: context,
+    builder: (BuildContext dialogContext) {
+      return AlertDialog(
+        title: Text("Enter Your Text"),
+        content: TextField(
+          controller: textController,
+          decoration: InputDecoration(hintText: "Type here"),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(dialogContext);
+            },
+            child: Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () {
+              context.read<DrawTextBloc>().add(UpdateText(textController.text));
+              Navigator.pop(dialogContext);
+            },
+            child: Text("OK"),
+          ),
+        ],
+      );
+    },
+  );
 }

@@ -6,6 +6,7 @@ import 'package:image_editor/presentation/bloc/drawing-shapes/shapes_event.dart'
 import 'package:image_editor/presentation/bloc/drawing-shapes/shapes_state.dart';
 import 'package:image_editor/presentation/screens/draw/custom_painter.dart';
 import 'package:image_editor/presentation/widgets/color_picker_widget.dart';
+import 'package:image_editor/presentation/widgets/custom_sliders_for_size.dart';
 
 class DrawShapesView extends StatelessWidget {
   final String imagePath;
@@ -14,7 +15,6 @@ class DrawShapesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Draw Shapes')),
       body: Column(
         children: [
           Expanded(
@@ -23,34 +23,13 @@ class DrawShapesView extends StatelessWidget {
                 Image.file(File(imagePath)),
                 BlocBuilder<ShapeBloc, ShapeState>(
                   builder: (context, state) {
-                    return CustomPaint(
-                      painter: ShapePainter(state.shapes),
-                      child: Container(),
-                    );
+                    return CustomPaint(painter: ShapePainter(state.shapes));
                   },
                 ),
               ],
             ),
           ),
           ShapeControls(),
-          BlocBuilder<ShapeBloc, ShapeState>(
-            builder: (context, state) {
-              double currentStrokeWidth =
-                  state.shapes.isNotEmpty ? state.shapes.last.strokeWidth : 3.0;
-
-              return Slider(
-                value: currentStrokeWidth,
-                min: 1.0,
-                max: 10.0,
-                divisions: 9,
-                onChanged: (value) {
-                  context.read<ShapeBloc>().add(
-                    UpdateLastShapeStrokeWidth(value),
-                  );
-                },
-              );
-            },
-          ),
         ],
       ),
     );
@@ -60,66 +39,173 @@ class DrawShapesView extends StatelessWidget {
 class ShapeControls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ElevatedButton(
-          onPressed: () {
-            context.read<ShapeBloc>().add(AddRectangle(Colors.black));
-          },
-          child: Text("Add Rectangle"),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            context.read<ShapeBloc>().add(AddEllipse(Colors.black));
-          },
-          child: Text("Add Ellipse"),
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 1,
+            child: Column(
+              children: [
+                IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
 
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: () {
-                context.read<ShapeBloc>().add(UpdateLastShapeColor(Colors.red));
-              },
-              child: ColorPickerWidget.createColorPicker(context, Colors.red),
-            ),
-            GestureDetector(
-              onTap: () {
-                context.read<ShapeBloc>().add(
-                  UpdateLastShapeColor(Colors.blue),
-                );
-              },
-              child: ColorPickerWidget.createColorPicker(context, Colors.blue),
-            ),
-            GestureDetector(
-              onTap: () {
-                context.read<ShapeBloc>().add(
-                  UpdateLastShapeColor(Colors.green),
-                );
-              },
-              child: ColorPickerWidget.createColorPicker(context, Colors.green),
-            ),
-            GestureDetector(
-              onTap: () {
-                context.read<ShapeBloc>().add(
-                  UpdateLastShapeColor(Colors.white),
-                );
-              },
-              child: ColorPickerWidget.createColorPicker(context, Colors.white),
-            ),
-            GestureDetector(
-              onTap: () {
-                context.read<ShapeBloc>().add(
-                  UpdateLastShapeColor(Colors.grey),
-                );
-              },
-              child: ColorPickerWidget.createColorPicker(context, Colors.grey),
-            ),
+                IconButton(
+                  onPressed: () {
+                    context.read<ShapeBloc>().add(AddRectangle(Colors.black));
+                  },
+                  icon: Icon(Icons.rectangle_outlined),
+                ),
 
-          ],
-        ),
-      ],
+                IconButton(
+                  onPressed: () {
+                    context.read<ShapeBloc>().add(AddEllipse(Colors.black));
+                  },
+                  icon: Icon(Icons.circle_outlined),
+                ),
+              ],
+            ),
+          ),
+
+          Expanded(
+            flex: 8,
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 10,
+                      child: BlocBuilder<ShapeBloc, ShapeState>(
+                        builder: (context, state) {
+                          double currentStrokeWidth =
+                              state.shapes.isNotEmpty
+                                  ? state.shapes.last.strokeWidth
+                                  : 3.0;
+                          return CustomSlidersForSize.buildSliderforSize(
+                            context,
+                            currentStrokeWidth,
+                            1.0,
+                            10.0,
+                            9,
+                            (value) {
+                              context.read<ShapeBloc>().add(
+                                UpdateLastShapeStrokeWidth(value),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                    Expanded(flex: 2, child: Text('Size')),
+                  ],
+                ),
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        context.read<ShapeBloc>().add(
+                          UpdateLastShapeColor(Colors.red),
+                        );
+                      },
+                      child: ColorPickerWidget.createColorPicker(
+                        context,
+                        Colors.red,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        context.read<ShapeBloc>().add(
+                          UpdateLastShapeColor(Colors.blue),
+                        );
+                      },
+                      child: ColorPickerWidget.createColorPicker(
+                        context,
+                        Colors.blue,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        context.read<ShapeBloc>().add(
+                          UpdateLastShapeColor(Colors.green),
+                        );
+                      },
+                      child: ColorPickerWidget.createColorPicker(
+                        context,
+                        Colors.green,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        context.read<ShapeBloc>().add(
+                          UpdateLastShapeColor(Colors.white),
+                        );
+                      },
+                      child: ColorPickerWidget.createColorPicker(
+                        context,
+                        Colors.white,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        context.read<ShapeBloc>().add(
+                          UpdateLastShapeColor(Colors.grey),
+                        );
+                      },
+                      child: ColorPickerWidget.createColorPicker(
+                        context,
+                        Colors.grey,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        context.read<ShapeBloc>().add(
+                          UpdateLastShapeColor(Colors.red),
+                        );
+                      },
+                      child: ColorPickerWidget.createColorPicker(
+                        context,
+                        Colors.red,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        context.read<ShapeBloc>().add(
+                          UpdateLastShapeColor(Colors.blue),
+                        );
+                      },
+                      child: ColorPickerWidget.createColorPicker(
+                        context,
+                        Colors.blue,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        context.read<ShapeBloc>().add(
+                          UpdateLastShapeColor(Colors.green),
+                        );
+                      },
+                      child: ColorPickerWidget.createColorPicker(
+                        context,
+                        Colors.green,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        context.read<ShapeBloc>().add(
+                          UpdateLastShapeColor(Colors.white),
+                        );
+                      },
+                      child: ColorPickerWidget.createColorPicker(
+                        context,
+                        Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

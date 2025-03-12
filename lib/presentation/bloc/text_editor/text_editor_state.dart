@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class DrawTextState{
+class DrawTextState {
   final String text;
   final double fontSize;
   final Color textColor;
@@ -10,7 +10,7 @@ class DrawTextState{
 
   DrawTextState({
     this.text = "Sample Text",
-    this.fontSize = 3,
+    this.fontSize = 6,
     this.textColor = Colors.black,
     this.fontWeight = FontWeight.normal,
     this.fontStyle = FontStyle.normal,

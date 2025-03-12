@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_editor/style/colors.dart';
 
 class ControlsSlider extends StatelessWidget {
   const ControlsSlider({
@@ -19,20 +20,22 @@ class ControlsSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(
-          title,
-          style: const TextStyle(
-            color: Colors.white,
-          ),
-        ),
         Expanded(
-          child: Slider(
-            min: min ?? 0,
-            max: max ?? 1,
-            value: value,
-            onChanged: onChanged,
+          child: SliderTheme(
+            data: SliderTheme.of(context).copyWith(
+              activeTrackColor: AppColors.textFieldBorderColor,
+              inactiveTrackColor: AppColors.successColor,
+              thumbColor: AppColors.surfaceColor,
+            ),
+            child: Slider(
+              min: min ?? 0,
+              max: max ?? 1,
+              value: value,
+              onChanged: onChanged,
+            ),
           ),
         ),
+        Text(title, style: const TextStyle(color: AppColors.black)),
       ],
     );
   }

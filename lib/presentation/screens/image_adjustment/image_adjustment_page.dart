@@ -69,7 +69,6 @@ class _ImageAdjustmentPageState extends State<ImageAdjustmentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Adjust Image")),
       body: BlocBuilder<ImageAdjustmentBloc, ImageAdjustmentState>(
         builder: (context, state) {
           return Column(
@@ -120,11 +119,15 @@ class _ImageAdjustmentPageState extends State<ImageAdjustmentPage> {
                         );
                       },
                     ),
-                    ControlsSlider(title: 'WhiteBalance', value: state.whiteBalance, onChanged: (value) {
-                      context.read<ImageAdjustmentBloc>().add(
-                        ChangeWhiteBalance(value),
-                      );
-                    }),
+                    ControlsSlider(
+                      title: 'WhiteBalance',
+                      value: state.whiteBalance,
+                      onChanged: (value) {
+                        context.read<ImageAdjustmentBloc>().add(
+                          ChangeWhiteBalance(value),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),

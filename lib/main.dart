@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_editor/presentation/bloc/drawing-shapes/shapes_bloc.dart';
 import 'package:image_editor/presentation/bloc/imageINput/input_input_bloc.dart';
 import 'package:image_editor/presentation/bloc/image_adjustment/image_adjust_bloc.dart';
+import 'package:image_editor/presentation/bloc/navigation/navigation_bloc.dart';
 import 'package:image_editor/presentation/bloc/text_editor/text_editor_bloc.dart';
 import 'package:image_editor/presentation/screens/home_page.dart';
 
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => ImageAdjustmentBloc()),
         BlocProvider(create: (context) => DrawTextBloc()),
         BlocProvider(create: (context) => ShapeBloc()),
+        BlocProvider(create: (context) => NavigationBloc()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
