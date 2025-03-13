@@ -1,4 +1,4 @@
-import 'dart:ui' show Color;
+import 'dart:ui' show Color, Offset;
 
 import 'package:equatable/equatable.dart';
 
@@ -35,4 +35,34 @@ class UpdateLastShapeStrokeWidth extends ShapeEvent {
   @override
   // TODO: implement props
   List<Object?> get props => [strokeWidth];
+}
+
+
+
+
+class MoveShapeEvent extends ShapeEvent {
+  final Offset newPosition;
+
+  MoveShapeEvent(this.newPosition);
+
+  @override
+  List<Object?> get props => [newPosition];
+}
+
+class RotateShapeEvent extends ShapeEvent {
+  final double newRotation;
+
+  RotateShapeEvent(this.newRotation);
+
+  @override
+  List<Object?> get props => [newRotation];
+}
+
+class ResizeShapeEvent extends ShapeEvent {
+  final double newScale;
+
+  ResizeShapeEvent(this.newScale);
+
+  @override
+  List<Object?> get props => [newScale];
 }

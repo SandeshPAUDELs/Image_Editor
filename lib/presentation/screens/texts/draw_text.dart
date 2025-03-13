@@ -59,23 +59,17 @@ class DrawText extends StatelessWidget {
                                       color: Colors.blue,
                                       strokeWidth: 1,
                                     ),
-                                    child: Container(
-                                      padding: const EdgeInsets.all(8.0),
-                                      width:
-                                          MediaQuery.of(context).size.width *
-                                          0.8,
-                                      child: Text(
-                                        state.text,
-                                        maxLines: 3,
-                                        style: TextStyle(
-                                          fontSize: state.fontSize,
-                                          color: state.textColor,
-                                          fontWeight: state.fontWeight,
-                                          fontStyle: state.fontStyle,
-                                        ),
-                                        textAlign: state.textAlign,
-                                        overflow: TextOverflow.ellipsis,
+                                    child: Text(
+                                      state.text,
+                                      maxLines: 3,
+                                      style: TextStyle(
+                                        fontSize: state.fontSize,
+                                        color: state.textColor,
+                                        fontWeight: state.fontWeight,
+                                        fontStyle: state.fontStyle,
                                       ),
+                                      textAlign: state.textAlign,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                                   Row(

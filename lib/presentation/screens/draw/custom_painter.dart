@@ -12,7 +12,7 @@ class ShapePainter extends CustomPainter {
         ..color = shape.color
         ..style = PaintingStyle.stroke
         ..strokeWidth = shape.strokeWidth;
-
+        
       if (shape is RectangleShape) {
         canvas.drawRect(shape.rect, paint);
       } else if (shape is EllipseShape) {

@@ -12,3 +12,4 @@ class ShapeInitial extends ShapeState {
 class ShapeUpdated extends ShapeState {
   ShapeUpdated(List<Shape> shapes) : super(shapes);
 }
+

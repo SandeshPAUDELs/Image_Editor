@@ -34,5 +34,35 @@ class ShapeBloc extends Bloc<ShapeEvent, ShapeState> {
         emit(ShapeUpdated(updatedShapes));
       }
     });
+    
+    on<MoveShapeEvent>((event, emit) {
+      if(state.shapes.isNotEmpty) {
+        final updatedShapes = List<Shape>.from(state.shapes);
+        final lastShape = updatedShapes.removeLast();
+        updatedShapes.add(lastShape.copyWith(position: event.newPosition));
+        emit(ShapeUpdated(updatedShapes));
+      emit(ShapeUpdated(updatedShapes));
+      }
+    });
+
+    on<RotateShapeEvent>((event, emit) {
+      if(state.shapes.isNotEmpty) {
+        final updatedShapes = List<Shape>.from(state.shapes);
+        final lastShape = updatedShapes.removeLast();
+        updatedShapes.add(lastShape.copyWith(rotation: event.newRotation));
+        emit(ShapeUpdated(updatedShapes));
+      emit(ShapeUpdated(updatedShapes));
+      }
+    });
+
+    on<ResizeShapeEvent>((event, emit) {
+      if(state.shapes.isNotEmpty) {
+        final updatedShapes = List<Shape>.from(state.shapes);
+        final lastShape = updatedShapes.removeLast();
+        updatedShapes.add(lastShape.copyWith(scale: event.newScale));
+        emit(ShapeUpdated(updatedShapes));
+      emit(ShapeUpdated(updatedShapes));
+      }
+    });
   }
 }

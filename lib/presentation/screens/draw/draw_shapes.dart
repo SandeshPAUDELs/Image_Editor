@@ -23,7 +23,13 @@ class DrawShapesView extends StatelessWidget {
                 Image.file(File(imagePath)),
                 BlocBuilder<ShapeBloc, ShapeState>(
                   builder: (context, state) {
-                    return CustomPaint(painter: ShapePainter(state.shapes));
+                    return GestureDetector(
+                      onTap:
+                          () => print(
+                            'moving shape by draggin, Rotating shapes, Resizing shapes to be performed',
+                          ),
+                      child: CustomPaint(painter: ShapePainter(state.shapes)),
+                    );
                   },
                 ),
               ],
@@ -98,6 +104,63 @@ class ShapeControls extends StatelessWidget {
                     Expanded(flex: 2, child: Text('Size')),
                   ],
                 ),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 10,
+                      child: BlocBuilder<ShapeBloc, ShapeState>(
+                        builder: (context, state) {
+                          double currentRotation =
+                              state.shapes.isNotEmpty
+                                  ? state.shapes.last.rotation
+                                  : 0.0;
+                          return CustomSlidersForSize.buildSliderforSize(
+                            context,
+                            currentRotation,
+                            0.0,
+                            360.0,
+                            9,
+                            (value) {
+                              context.read<ShapeBloc>().add(
+                                RotateShapeEvent(value),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                    Expanded(flex: 2, child: Text('Rotation')),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 10,
+                      child: BlocBuilder<ShapeBloc, ShapeState>(
+                        builder: (context, state) {
+                          double currentSize =
+                              state.shapes.isNotEmpty
+                                  ? state.shapes.last.scale
+                                  : 1.0;
+                          return CustomSlidersForSize.buildSliderforSize(
+                            context,
+                            currentSize,
+                            1.0,
+                            10.0,
+                            9,
+                            (value) {
+                              context.read<ShapeBloc>().add(
+                                ResizeShapeEvent(value),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                    Expanded(flex: 2, child: Text('Resize')),
+                  ],
+                ),
+
                 Row(
                   children: [
                     GestureDetector(
